@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RPG.Combat;
+using RPG.Core;
 using UnityEngine.AI;
 
 namespace RPG.Movement {
-    public class Mover : MonoBehaviour {
+    public class Mover : MonoBehaviour, IAction {
         // Update is called once per frame
 
         NavMeshAgent NavMeshAgent;
@@ -17,32 +17,6 @@ namespace RPG.Movement {
 
         void Update() {
             UpdateAnimator();
-        }
-
-        /// <summary>
-        /// Sets the destination for the navMeshAgent. Begins its movement towards that point
-        /// </summary>
-        /// <param name="Destination"> Vector 3 point character will move to </param>
-        public void MoveTo(Vector3 Destination) {
-            NavMeshAgent.destination = Destination;
-            NavMeshAgent.isStopped = false;
-        }
-
-        /// <summary>
-        /// Stops the movement of the NavMeshAgent
-        /// </summary>
-        public void Stop() {
-
-            NavMeshAgent.isStopped = true;
-        }
-
-        /// <summary>
-        /// Cancels any attacks that a character may be performing and has them move towards a destination
-        /// </summary>
-        /// <param name="destination"> Vector 3 point character will move to </param>
-        public void StartMoveAction(Vector3 destination) {
-            GetComponent<Fighter>().Cancel();
-            MoveTo(destination);
         }
 
         /// <summary>
@@ -59,5 +33,32 @@ namespace RPG.Movement {
             animator.SetFloat("ForwardSpeed", speed);
 
         }
+
+        /// <summary>
+        ///Stops any other actions the character may be performing and has them move towards a destination
+        /// </summary>
+        /// <param name="destination"> Vector 3 point character will move to </param>
+        public void StartMoveAction(Vector3 destination) {
+            GetComponent<ActionScheduler>().StartAction(this);
+            MoveTo(destination);
+        }
+
+        /// <summary>
+        /// Sets the destination for the navMeshAgent. Begins its movement towards that point
+        /// </summary>
+        /// <param name="Destination"> Vector 3 point character will move to </param>
+        public void MoveTo(Vector3 Destination) {
+            NavMeshAgent.destination = Destination;
+            NavMeshAgent.isStopped = false;
+        }
+
+        /// <summary>
+        /// Stops the movement of the NavMeshAgent
+        /// </summary>
+        public void Cancel() {
+            NavMeshAgent.isStopped = true;
+        }
+
+  
     }
 }

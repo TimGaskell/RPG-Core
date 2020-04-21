@@ -24,7 +24,9 @@ namespace RPG.Control {
             foreach(RaycastHit hit in hits) {
 
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target == null) continue;
+                if (!GetComponent<Fighter>().CanAttack(target)) { //checks if character has health or is dead. Don't want to target dead characters.
+                    continue;
+                }
 
                 if (Input.GetMouseButtonDown(0)) {
                     GetComponent<Fighter>().Attack(target);                   
