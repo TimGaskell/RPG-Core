@@ -20,5 +20,12 @@ namespace RPG.Core {
             currentAction = action;
         }
 
+        /// <summary>
+        /// Sets the current action to null to stop any actions currently occurring. 
+        /// </summary>
+        public void CancelCurrentAction() {
+            StartAction(null);
+        }
+
     }
 }

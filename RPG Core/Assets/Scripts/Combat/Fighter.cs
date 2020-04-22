@@ -13,7 +13,7 @@ namespace RPG.Combat {
         
         Health target;
 
-        float timeSinceLastAttack = 0;
+        float timeSinceLastAttack = Mathf.Infinity;
 
         Mover mover;
         Animator animator;
@@ -69,7 +69,7 @@ namespace RPG.Combat {
         /// Responsible for setting the current combatTarget for the character.
         /// </summary>
         /// <param name="CombatTarget"> Combat Target </param>
-        public void Attack(CombatTarget CombatTarget) {
+        public void Attack(GameObject CombatTarget) {
 
             GetComponent<ActionScheduler>().StartAction(this);
             target = CombatTarget.GetComponent<Health>();
@@ -89,7 +89,7 @@ namespace RPG.Combat {
         /// </summary>
         /// <param name="combatTarget"></param>
         /// <returns></returns>
-        public bool CanAttack(CombatTarget combatTarget) {
+        public bool CanAttack(GameObject combatTarget) {
 
             if (combatTarget == null) return false;
 
