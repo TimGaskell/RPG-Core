@@ -9,6 +9,7 @@ namespace RPG.Movement {
         // Update is called once per frame
 
         NavMeshAgent NavMeshAgent;
+        [SerializeField] float MaxSpeed = 6f;
 
         Health health;
 
@@ -43,17 +44,18 @@ namespace RPG.Movement {
         ///Stops any other actions the character may be performing and has them move towards a destination
         /// </summary>
         /// <param name="destination"> Vector 3 point character will move to </param>
-        public void StartMoveAction(Vector3 destination) {
+        public void StartMoveAction(Vector3 destination, float speedFraction) {
             GetComponent<ActionScheduler>().StartAction(this);
-            MoveTo(destination);
+            MoveTo(destination, speedFraction);
         }
 
         /// <summary>
         /// Sets the destination for the navMeshAgent. Begins its movement towards that point
         /// </summary>
         /// <param name="Destination"> Vector 3 point character will move to </param>
-        public void MoveTo(Vector3 Destination) {
+        public void MoveTo(Vector3 Destination, float speedFraction) {
             NavMeshAgent.destination = Destination;
+            NavMeshAgent.speed = MaxSpeed * Mathf.Clamp01(speedFraction);
             NavMeshAgent.isStopped = false;
         }
 
