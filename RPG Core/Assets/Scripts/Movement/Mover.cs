@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
 using UnityEngine.AI;
+using RPG.Saving;
 
 namespace RPG.Movement {
-    public class Mover : MonoBehaviour, IAction {
+    public class Mover : MonoBehaviour, IAction, ISaveable {
         // Update is called once per frame
 
         NavMeshAgent NavMeshAgent;
@@ -66,6 +67,29 @@ namespace RPG.Movement {
             NavMeshAgent.isStopped = true;
         }
 
-  
+        /// <summary>
+        /// Saves the transform and rotation of the character this script is attached to
+        /// </summary>
+        /// <returns> Dictionary which contains position and rotation of character </returns>
+        public object CaptureState() {
+
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["position"] = new SerializableVector3(transform.position);
+            data["rotation"] = new SerializableVector3(transform.eulerAngles);
+
+            return data;
+        }
+
+        /// <summary>
+        /// Reads back object to restore position and rotation of the previous save
+        /// </summary>
+        /// <param name="state"> object data being passed through </param>
+        public void RestoreState(object state) {
+
+            Dictionary<string, object> data = (Dictionary<string, object>)state;
+
+            transform.position = ((SerializableVector3)data["position"]).ToVector();
+            transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
+        }
     }
 }
