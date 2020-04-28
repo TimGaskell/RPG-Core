@@ -6,28 +6,19 @@ using RPG.Core;
 
 namespace RPG.Combat {
     public class Fighter : MonoBehaviour, IAction {
-
-        [SerializeField] float WeaponRange = 2f;
+      
         [SerializeField] float AttackDelay = 1f;
-        [SerializeField] float WeaponDamage = 5f;
-        [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] Transform handTransform = null;
-        [SerializeField] AnimatorOverrideController weaponOverride = null;
+        [SerializeField] Transform RightHandTransform = null;
+        [SerializeField] Transform LeftHandTransform = null;
+        [SerializeField] Weapon defaultWeapon = null;
         
         Health target;
-
-        float timeSinceLastAttack = Mathf.Infinity;
-
-        Mover mover;
-        Animator animator;
-        
+        Weapon currentWeapon = null;
+        float timeSinceLastAttack = Mathf.Infinity;     
 
         private void Start() {
 
-            SpawnWeapon();
-
-            mover = GetComponent<Mover>();
-            animator = GetComponent<Animator>();
+            EquipWeapon(defaultWeapon);
 
         }
 
@@ -39,10 +30,10 @@ namespace RPG.Combat {
             if (target.IsDead()) return;
 
             if (!GetIsInRange()) {
-                mover.MoveTo(target.transform.position,1f);
+                GetComponent<Mover>().MoveTo(target.transform.position,1f);
             }
             else {
-                mover.Cancel(); //Character stops moving
+                GetComponent<Mover>().Cancel(); //Character stops moving
                 AttackBehaviour();
             }
         }
@@ -53,7 +44,7 @@ namespace RPG.Combat {
         /// </summary>
         /// <returns> True or False if the character is in range of the target assigned </returns>
         private bool GetIsInRange() {
-            return Vector3.Distance(transform.position, target.transform.position) < WeaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange() ;
         }
 
         /// <summary>
@@ -86,7 +77,7 @@ namespace RPG.Combat {
         /// </summary>
         void Hit() {
             if (target == null) return;
-            target.TakeDamage(WeaponDamage);
+            target.TakeDamage(currentWeapon.GetDamage());
         }
 
         /// <summary>
@@ -116,22 +107,29 @@ namespace RPG.Combat {
         /// Sets triggers to begin attack animation
         /// </summary>
         private void TriggerAttack() {
-            animator.ResetTrigger("StopAttack");
-            animator.SetTrigger("attack");
+            GetComponent<Animator>().ResetTrigger("StopAttack");
+            GetComponent<Animator>().SetTrigger("attack");
         }
 
         /// <summary>
         /// Sets triggers to stop attack animation
         /// </summary>
         private void TriggerStopAttack() {
-            animator.ResetTrigger("attack");
-            animator.SetTrigger("StopAttack");
+            GetComponent<Animator>().ResetTrigger("attack");
+            GetComponent<Animator>().SetTrigger("StopAttack");
         }
 
-        private void SpawnWeapon() {
-            Instantiate(weaponPrefab, handTransform);
-            animator.runtimeAnimatorController = weaponOverride;
+        /// <summary>
+        /// Equips a weapon to the character. Calls for the weapon to be spawned on the appropriate hand of the character
+        /// </summary>
+        /// <param name="weapon"></param>
+        public void EquipWeapon(Weapon weapon) {
+
+            currentWeapon = weapon;
+            Animator animator = GetComponent<Animator>();
+            weapon.SpawnWeapon(RightHandTransform, LeftHandTransform, GetComponent<Animator>());
         }
+     
    
     }
 
