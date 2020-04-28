@@ -20,10 +20,17 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1307
+<<<<<<< Updated upstream
   m_MinSize: {x: 681, y: 472}
   m_MaxSize: {x: 14002, y: 14022}
   vertical: 1
   controlID: 1201
+=======
+  m_MinSize: {x: 683, y: 494}
+  m_MaxSize: {x: 14004, y: 14044}
+  vertical: 1
+  controlID: 138
+>>>>>>> Stashed changes
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -126,10 +133,17 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1307
+<<<<<<< Updated upstream
   m_MinSize: {x: 681, y: 472}
   m_MaxSize: {x: 14002, y: 14022}
   vertical: 0
   controlID: 1202
+=======
+  m_MinSize: {x: 683, y: 494}
+  m_MaxSize: {x: 14004, y: 14044}
+  vertical: 0
+  controlID: 139
+>>>>>>> Stashed changes
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -151,10 +165,17 @@ MonoBehaviour:
     y: 0
     width: 1837
     height: 1307
+<<<<<<< Updated upstream
   m_MinSize: {x: 404, y: 472}
   m_MaxSize: {x: 10000, y: 14022}
   vertical: 1
   controlID: 1148
+=======
+  m_MinSize: {x: 406, y: 494}
+  m_MaxSize: {x: 10002, y: 14044}
+  vertical: 1
+  controlID: 90
+>>>>>>> Stashed changes
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -179,7 +200,11 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 222}
   m_MaxSize: {x: 8004, y: 4022}
   vertical: 0
+<<<<<<< Updated upstream
   controlID: 1125
+=======
+  controlID: 66
+>>>>>>> Stashed changes
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -237,7 +262,11 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
+<<<<<<< Updated upstream
       m_ExpandedIDs: 7afbffff
+=======
+      m_ExpandedIDs: 8cf6ffff
+>>>>>>> Stashed changes
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -327,9 +356,15 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
+<<<<<<< Updated upstream
     m_Target: {x: 6.1959624, y: 5.7114906, z: -7.791029}
     speed: 2
     m_Value: {x: 6.1959624, y: 5.7114906, z: -7.791029}
+=======
+    m_Target: {x: 15.332217, y: -2.1706438, z: 24.54283}
+    speed: 2
+    m_Value: {x: 15.332217, y: -2.1706438, z: 24.54283}
+>>>>>>> Stashed changes
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -358,9 +393,15 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
+<<<<<<< Updated upstream
     m_Target: {x: -0.055166684, y: 0.9091045, z: -0.12798788, w: -0.39289474}
     speed: 2
     m_Value: {x: -0.055159472, y: 0.9089857, z: -0.12797114, w: -0.39284337}
+=======
+    m_Target: {x: -0.21578275, y: 0.27433118, z: -0.06337509, w: -0.9351043}
+    speed: 2
+    m_Value: {x: -0.2157551, y: 0.27429605, z: -0.06336697, w: -0.9349845}
+>>>>>>> Stashed changes
   m_Size:
     m_Target: 4.0905
     speed: 2
@@ -618,20 +659,34 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
+<<<<<<< Updated upstream
     - Assets/Asset Packs/Synty - Polygon Student Sample/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
   - Assets/Asset Packs/Synty - Polygon Student Sample/Prefabs
+=======
+    - Assets/Scripts/Core
+  m_ViewMode: 1
+  m_StartGridSize: 64
+  m_LastFolders:
+  - Assets/Scripts/Core
+>>>>>>> Stashed changes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: F:\GitHub Folders\Unity Projects\RPG-Core\RPG Core
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
+<<<<<<< Updated upstream
     m_SelectedIDs: 0c320000
     m_LastClickedID: 12812
     m_ExpandedIDs: 00000000f82c00006c2e0000a82e000098300000143100001a31000000ca9a3b
+=======
+    m_SelectedIDs: 1c340000
+    m_LastClickedID: 13340
+    m_ExpandedIDs: 00000000e62f0000f0300000563100008231000062330000d833000000ca9a3b
+>>>>>>> Stashed changes
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -659,7 +714,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< Updated upstream
     m_ExpandedIDs: 00000000f82c00006c2e0000a82e0000983000001431000000ca9a3b
+=======
+    m_ExpandedIDs: 00000000e62f0000563100008231000062330000d8330000
+>>>>>>> Stashed changes
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
