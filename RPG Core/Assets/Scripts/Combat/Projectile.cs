@@ -6,15 +6,19 @@ using RPG.Core;
 namespace RPG.Combat {
 
     public class Projectile : MonoBehaviour {
-
-        Health target = null;
+        
         [SerializeField] float Speed = 1;
         [SerializeField] bool isHoming = true;
+        [SerializeField] GameObject hitEffect = null;
+        [SerializeField] float maxLifeTime = 10f;
+        [SerializeField] float lifeAfterImpact = 2f;
+        [SerializeField] GameObject[] destroyOnHit = null;
+        Health target = null;
         float damage = 0;
 
         private void Start() {
 
-            transform.LookAt(GetAimLocation());
+            transform.LookAt(GetAimLocation()); // Makes projectile face target
 
         }
 
@@ -30,13 +34,24 @@ namespace RPG.Combat {
 
         }
 
+        /// <summary>
+        /// Sets the target the projectile is heading toward. Sets how much damage this projectile does. Also sets the time for how long the projectile will stay in the scene
+        /// </summary>
+        /// <param name="target"> Target projectile is targeted at </param>
+        /// <param name="damage"> Amount of damage projectile does to target </param>
         public void SetTarget(Health target, float damage) {
 
             this.target = target;
             this.damage = damage;
 
+            Destroy(gameObject, maxLifeTime);
+
         }
 
+        /// <summary>
+        /// Gets the location the projectile should head towards. IF the target has a capsule collider it adjusts the height to aim for the center mass. 
+        /// </summary>
+        /// <returns> Vector 3 position where the projectile target should go to </returns>
         private Vector3 GetAimLocation() {
             CapsuleCollider targetCapsule = target.GetComponent<CapsuleCollider>();
            
@@ -46,15 +61,27 @@ namespace RPG.Combat {
             return target.transform.position + Vector3.up * targetCapsule.height / 2;
         }
 
+        /// <summary>
+        /// Trigger event when projectile hits its target. The projectile does damage to the target and creates a hit effect is assigned. Once done the object is then destoryed
+        /// </summary>
+        /// <param name="other">Collider of entity that entered trigger</param>
         private void OnTriggerEnter(Collider other) {
 
             if (other.GetComponent<Health>() != target) return;
             if (target.IsDead()) return;
-               
             target.TakeDamage(damage);
-            Destroy(gameObject);
-            
+            Speed = 0;
 
+            if (hitEffect != null) {
+                Instantiate(hitEffect, GetAimLocation(), transform.rotation);
+            }
+               
+            foreach(GameObject toDestory in destroyOnHit) {
+                Destroy(toDestory);
+            }
+
+            Destroy(gameObject,lifeAfterImpact);
+            
         }
     }
 

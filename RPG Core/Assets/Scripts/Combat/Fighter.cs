@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using RPG.Saving;
 
 namespace RPG.Combat {
-    public class Fighter : MonoBehaviour, IAction {
+    public class Fighter : MonoBehaviour, IAction, ISaveable {
       
         [SerializeField] float AttackDelay = 1f;
         [SerializeField] Transform RightHandTransform = null;
@@ -18,8 +19,9 @@ namespace RPG.Combat {
 
         private void Start() {
 
-            EquipWeapon(defaultWeapon);
-
+            if (currentWeapon == null) {
+                EquipWeapon(defaultWeapon);
+            }
         }
 
         private void Update() {
@@ -139,8 +141,27 @@ namespace RPG.Combat {
             Animator animator = GetComponent<Animator>();
             weapon.SpawnWeapon(RightHandTransform, LeftHandTransform, GetComponent<Animator>());
         }
-     
-   
-    }
 
+        /// <summary>
+        /// Saves the current weapon name 
+        /// </summary>
+        /// <returns> name of weapon name </returns>
+        public object CaptureState() {
+
+            return currentWeapon.name;
+        }
+
+        /// <summary>
+        /// Reloads the last weapon the player had equipped in the save
+        /// </summary>
+        /// <param name="state"> Object containing string name of weapon last equipped </param>
+        public void RestoreState(object state) {
+
+            string WeaponName = (string)state;
+            Weapon weapon = Resources.Load<Weapon>(WeaponName);
+            EquipWeapon(weapon);
+
+        }
+       
+    }
 }
