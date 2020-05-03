@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RPG.Core;
 using System;
+using RPG.Resources;
 
 namespace RPG.Combat {
 
@@ -98,10 +98,10 @@ namespace RPG.Combat {
         /// <param name="RightHand"> Right hand Transform</param>
         /// <param name="LeftHand"> Left Hand transform </param>
         /// <param name="Target"> Target with health script</param>
-        public void LaunchProjectile(Transform RightHand, Transform LeftHand, Health Target) {
+        public void LaunchProjectile(Transform RightHand, Transform LeftHand, Health Target,GameObject instigator) {
 
             Projectile projectileInstance = Instantiate(projectile, GetHandTransform(RightHand, LeftHand).position,Quaternion.identity);
-            projectileInstance.SetTarget(Target,WeaponDamage);
+            projectileInstance.SetTarget(Target,instigator, WeaponDamage);
         }
 
         /// <summary>

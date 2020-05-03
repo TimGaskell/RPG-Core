@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponOverride: {fileID: 22100000, guid: 59b619e188a318341b1836a0e64e2ef7, type: 2}
   weaponPrefab: {fileID: 0}
-  WeaponRange: 7
-  WeaponDamage: 10
+  WeaponRange: 5
+  WeaponDamage: 30
   isRightHanded: 0
   projectile: {fileID: 5214720642829091314, guid: 30a63ec6246179b41a5307c5662b3668,
     type: 3}

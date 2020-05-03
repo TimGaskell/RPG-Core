@@ -2,25 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Saving;
+using RPG.Core;
+using RPG.Stats;
 
-namespace RPG.Core {
+namespace RPG.Resources {
     public class Health : MonoBehaviour, ISaveable {
 
-        [SerializeField] float health = 100f;
+        float health = -1f;
 
         bool isDead = false;
-       
+
+        private void Start() {
+
+            if (health < 0) {
+                health = GetComponent<BaseStats>().GetStat(Stat.Health);
+            }
+        }
+
         /// <summary>
         /// Reduces the health of this character. If health hits 0, character executes Die()
         /// </summary>
         /// <param name="damage"> How much damage the character will take </param>
-        public void TakeDamage(float damage) {
+        public void TakeDamage(GameObject instigator, float damage) {
 
             health = Mathf.Max(health - damage, 0);
             if(health == 0) {
                 Die();
+                AwardExpereince(instigator);
             }
 
+        }
+
+        /// <summary>
+        /// Gives experience points to the character that last did damage to them. Gives as much experience based upon the experience reward set in the base stats
+        /// </summary>
+        /// <param name="instigator"> GameObject that attacked this character</param>
+        public void AwardExpereince(GameObject instigator) {
+
+            Experience experience = instigator.GetComponent<Experience>();
+            if (experience == null) return;
+
+            experience.GainExperience(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
+        }
+
+        /// <summary>
+        /// Function that determines how much health the character has as a percentage of its max health
+        /// </summary>
+        /// <returns> Percentage out of 100 for how much health the character has</returns>
+        public float GetPercentage() {
+
+            return 100 *(health / GetComponent<BaseStats>().GetStat(Stat.Health));
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using UnityEngine;
 using RPG.Core;
 using UnityEngine.AI;
 using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Movement {
     public class Mover : MonoBehaviour, IAction, ISaveable {

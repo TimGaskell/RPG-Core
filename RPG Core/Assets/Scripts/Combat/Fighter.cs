@@ -4,6 +4,7 @@ using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
 using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Combat {
     public class Fighter : MonoBehaviour, IAction, ISaveable {
@@ -81,10 +82,10 @@ namespace RPG.Combat {
             if (target == null) return;
             
             if (currentWeapon.HasProjectile()) {
-                currentWeapon.LaunchProjectile(RightHandTransform, LeftHandTransform, target);
+                currentWeapon.LaunchProjectile(RightHandTransform, LeftHandTransform, target,gameObject);
             }
             else {
-                target.TakeDamage(currentWeapon.GetDamage());
+                target.TakeDamage(gameObject,currentWeapon.GetDamage());
             }
         }
 
@@ -142,6 +143,10 @@ namespace RPG.Combat {
             weapon.SpawnWeapon(RightHandTransform, LeftHandTransform, GetComponent<Animator>());
         }
 
+        public Health GetTarget() {
+            return target;
+        }
+
         /// <summary>
         /// Saves the current weapon name 
         /// </summary>
@@ -158,7 +163,7 @@ namespace RPG.Combat {
         public void RestoreState(object state) {
 
             string WeaponName = (string)state;
-            Weapon weapon = Resources.Load<Weapon>(WeaponName);
+            Weapon weapon = UnityEngine.Resources.Load<Weapon>(WeaponName);
             EquipWeapon(weapon);
 
         }
