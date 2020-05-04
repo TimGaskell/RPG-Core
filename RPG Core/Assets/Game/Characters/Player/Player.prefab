@@ -210,6 +210,17 @@ PrefabInstance:
       propertyPath: characterClass
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8157752416308309054, guid: b7b5018a5bb4784449266eed121a2f5f,
+        type: 3}
+      propertyPath: levelUpParticleEffect
+      value: 
+      objectReference: {fileID: 1986115923064496385, guid: 63c3fd63c3dc76d47afe41518906ce62,
+        type: 3}
+    - target: {fileID: 6390311652843543349, guid: b7b5018a5bb4784449266eed121a2f5f,
+        type: 3}
+      propertyPath: regenerationPercentage
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 2905693208541787299, guid: b7b5018a5bb4784449266eed121a2f5f,
         type: 3}
       propertyPath: uniqueIdentifier

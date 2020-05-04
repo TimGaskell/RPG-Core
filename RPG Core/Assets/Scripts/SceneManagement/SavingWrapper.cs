@@ -10,7 +10,11 @@ namespace RPG.SceneManagement {
         const string defaultSaveFile = "save";
         [SerializeField] float fadeInTime = 0.5f;
 
-        private IEnumerator Start() {
+        private void Awake() {
+            StartCoroutine(LoadLastScene());
+        }
+
+        private IEnumerator LoadLastScene() {
             Fader fader = GameObject.FindObjectOfType<Fader>();
             fader.FadeOutImmediate();
             yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);

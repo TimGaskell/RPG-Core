@@ -8,11 +8,15 @@ using RPG.Stats;
 namespace RPG.Resources {
     public class Health : MonoBehaviour, ISaveable {
 
+        [SerializeField] float regenerationPercentage = 70;
+
         float health = -1f;
 
         bool isDead = false;
 
         private void Start() {
+
+            GetComponent<BaseStats>().onLevelUp += RegenerateHealth;
 
             if (health < 0) {
                 health = GetComponent<BaseStats>().GetStat(Stat.Health);
@@ -24,6 +28,8 @@ namespace RPG.Resources {
         /// </summary>
         /// <param name="damage"> How much damage the character will take </param>
         public void TakeDamage(GameObject instigator, float damage) {
+
+            print(gameObject.name + " took damage: " + damage);
 
             health = Mathf.Max(health - damage, 0);
             if(health == 0) {
@@ -52,6 +58,22 @@ namespace RPG.Resources {
         public float GetPercentage() {
 
             return 100 *(health / GetComponent<BaseStats>().GetStat(Stat.Health));
+        }
+
+        /// <summary>
+        /// Gets the amount of health points the character currently has
+        /// </summary>
+        /// <returns> Current health points </returns>
+        public float GetHealthPoints() {
+            return health;
+        }
+
+        /// <summary>
+        /// Gets the maximum health points of the character
+        /// </summary>
+        /// <returns> Maximum health points of character </returns>
+        public float GetMaxHealthPoints() {
+            return GetComponent<BaseStats>().GetStat(Stat.Health);
         }
 
         /// <summary>
@@ -91,6 +113,15 @@ namespace RPG.Resources {
             if (health == 0) {
                 Die();
             }
+        }
+
+        /// <summary>
+        /// Regenerates a percentage of the maximum amount of health of the character
+        /// </summary>
+        private void RegenerateHealth() {
+
+            float regenHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health) * (regenerationPercentage / 100);
+            health = Mathf.Max(health, regenHealthPoints);
         }
     }
 }

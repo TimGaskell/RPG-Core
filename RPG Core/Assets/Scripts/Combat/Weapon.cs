@@ -98,10 +98,10 @@ namespace RPG.Combat {
         /// <param name="RightHand"> Right hand Transform</param>
         /// <param name="LeftHand"> Left Hand transform </param>
         /// <param name="Target"> Target with health script</param>
-        public void LaunchProjectile(Transform RightHand, Transform LeftHand, Health Target,GameObject instigator) {
+        public void LaunchProjectile(Transform RightHand, Transform LeftHand, Health Target,GameObject instigator, float calculatedDamage) {
 
             Projectile projectileInstance = Instantiate(projectile, GetHandTransform(RightHand, LeftHand).position,Quaternion.identity);
-            projectileInstance.SetTarget(Target,instigator, WeaponDamage);
+            projectileInstance.SetTarget(Target,instigator, calculatedDamage);
         }
 
         /// <summary>

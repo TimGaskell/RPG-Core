@@ -5,9 +5,10 @@ using RPG.Movement;
 using RPG.Core;
 using RPG.Saving;
 using RPG.Resources;
+using RPG.Stats;
 
 namespace RPG.Combat {
-    public class Fighter : MonoBehaviour, IAction, ISaveable {
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider {
       
         [SerializeField] float AttackDelay = 1f;
         [SerializeField] Transform RightHandTransform = null;
@@ -80,12 +81,14 @@ namespace RPG.Combat {
         /// </summary>
         void Hit() {
             if (target == null) return;
-            
+
+            float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
             if (currentWeapon.HasProjectile()) {
-                currentWeapon.LaunchProjectile(RightHandTransform, LeftHandTransform, target,gameObject);
+                currentWeapon.LaunchProjectile(RightHandTransform, LeftHandTransform, target,gameObject,damage);
             }
             else {
-                target.TakeDamage(gameObject,currentWeapon.GetDamage());
+                
+                target.TakeDamage(gameObject, damage);
             }
         }
 
@@ -143,6 +146,10 @@ namespace RPG.Combat {
             weapon.SpawnWeapon(RightHandTransform, LeftHandTransform, GetComponent<Animator>());
         }
 
+        /// <summary>
+        /// Returns the Health component of the target
+        /// </summary>
+        /// <returns> Returns the Health component of the target </returns>
         public Health GetTarget() {
             return target;
         }
@@ -167,6 +174,16 @@ namespace RPG.Combat {
             EquipWeapon(weapon);
 
         }
-       
+
+        /// <summary>
+        /// Function for returning any modifiers this script has for any passed in.
+        /// </summary>
+        /// <param name="stat"> Stat checking for modifiers</param>
+        /// <returns> list of IEnumerable floats for the given stat </returns>
+        public IEnumerable<float> GetAdditiveModifer(Stat stat) {
+           if(stat == Stat.Damage) {
+                yield return currentWeapon.GetDamage();
+            }
+        }
     }
 }
