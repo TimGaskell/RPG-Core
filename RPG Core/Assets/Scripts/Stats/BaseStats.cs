@@ -12,20 +12,34 @@ namespace RPG.Stats {
         [SerializeField] CharacterClass characterClass;
         [SerializeField] Progression progression = null;
         [SerializeField] GameObject levelUpParticleEffect = null;
+        [SerializeField] bool shouldUseModifiers = false;
 
         public event Action onLevelUp;
+        Experience experience;
 
         int currentLevel = 0;
+
+        private void Awake() {
+            experience = GetComponent<Experience>();
+        }
 
         private void Start() {
 
             currentLevel = CalculateLevel();
+            
+        }
 
-            Experience experience = GetComponent<Experience>();
-            if(experience != null) {
+        private void OnEnable() {
+
+            if (experience != null) {
                 experience.onExperienceGained += UpdateLevel;
-            }
+            }      
+        }
 
+        private void OnDisable() {
+            if (experience != null) {
+                experience.onExperienceGained -= UpdateLevel;
+            }
         }
 
         /// <summary>
@@ -60,7 +74,38 @@ namespace RPG.Stats {
         /// <param name="stat"> Type of stat being looked at</param>
         /// <returns> float value of stat for that level </returns>
         public float GetStat(Stat stat) {
-            return progression.GetStat(stat,characterClass,GetLevel()) + GetAdditiveModifier(stat);
+            return (GetBaseStat(stat) + GetAdditiveModifier(stat)) * (1 + GetPercentageModifier(stat)/100);
+        }
+
+
+        /// <summary>
+        /// Gets all values of objects that can affect the effectiveness of a specific stat. It searches for any component with the interface of IModifierProvider and loops through all the values it returns in GetPerCentageModifiers.
+        /// It then adds all the percentage modifiers together for that stat.
+        /// </summary>
+        /// <param name="stat"> Type of stat being looked at </param>
+        /// <returns> float of percentage modifiers applied to the stat </returns>
+        private float GetPercentageModifier(Stat stat) {
+
+            if (!shouldUseModifiers) return 0;
+            float total = 0;
+
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>()) {
+
+                foreach (float modifier in provider.GetPercentageModifiers(stat)) {
+
+                    total += modifier;
+                }
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// Gets the bases value of a specific stat at that given level
+        /// </summary>
+        /// <param name="stat"> Stat being looked at</param>
+        /// <returns> float value of that stat at the level </returns>
+        private float GetBaseStat(Stat stat) {
+            return progression.GetStat(stat, characterClass, GetLevel());
         }
 
         /// <summary>
@@ -71,15 +116,17 @@ namespace RPG.Stats {
         /// <returns> float of modifiers applied to the stat </returns>
         private float GetAdditiveModifier(Stat stat) {
 
+            if (!shouldUseModifiers) return 0; 
             float total = 0;
 
             foreach(IModifierProvider provider in GetComponents<IModifierProvider>()) {
 
-                foreach(float modifier in provider.GetAdditiveModifer(stat)) {
+                foreach(float modifier in provider.GetAdditiveModifers(stat)) {
 
                     total += modifier;
                 }
             }
+
             return total;
         }
 

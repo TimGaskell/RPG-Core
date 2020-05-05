@@ -176,13 +176,25 @@ namespace RPG.Combat {
         }
 
         /// <summary>
-        /// Function for returning any modifiers this script has for any passed in.
+        /// Function for returning any modifiers this script has for any specified stat passed in.
         /// </summary>
         /// <param name="stat"> Stat checking for modifiers</param>
         /// <returns> list of IEnumerable floats for the given stat </returns>
-        public IEnumerable<float> GetAdditiveModifer(Stat stat) {
+        public IEnumerable<float> GetAdditiveModifers(Stat stat) {
            if(stat == Stat.Damage) {
                 yield return currentWeapon.GetDamage();
+            }
+        }
+
+
+        /// <summary>
+        /// Function for returning any modifiers this script has for any specified stat passed in.
+        /// </summary>
+        /// <param name="stat"> Stat checking for modifiers</param>
+        /// <returns> list of IEnumerable floats for the given stat </returns>
+        public IEnumerable<float> GetPercentageModifiers(Stat stat) {
+            if(stat == Stat.Damage) {
+                yield return currentWeapon.GetPercentageBonus();
             }
         }
     }

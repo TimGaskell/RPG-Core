@@ -3,6 +3,9 @@
     Player,
     Grunt,
     Mage,
-    Archer
+    Archer,
+    Minion,
+    Thug,
+    Knight
     }
 }
