@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.Control;
 
 namespace RPG.Combat {
-    public class WeaponPickUp : MonoBehaviour {
+    public class WeaponPickUp : MonoBehaviour, IRayCastable {
 
         [SerializeField] Weapon weapon = null;
         [SerializeField] float respawnTime = 5;
@@ -15,11 +16,14 @@ namespace RPG.Combat {
         private void OnTriggerEnter(Collider other) {
             
             if(other.gameObject.tag == "Player") {
+                Pickup(other.GetComponent<Fighter>());
 
-                other.GetComponent<Fighter>().EquipWeapon(weapon);
-                StartCoroutine(HideForSeconds(respawnTime));
-                
             }
+        }
+
+        private void Pickup(Fighter fighter) {
+            fighter.EquipWeapon(weapon);
+            StartCoroutine(HideForSeconds(respawnTime));
         }
 
         /// <summary>
@@ -49,7 +53,25 @@ namespace RPG.Combat {
             }
         }
 
+        /// <summary>
+        /// Handles raycast functionality if cursor is hovering over
+        /// </summary>
+        /// <param name="callingController"> Player Controller</param>
+        /// <returns> True or false if function can handle the raycast </returns>
+        public bool HandRaycast(PlayerController callingController) {
+            if (Input.GetMouseButtonDown(0)) {
+                Pickup(callingController.GetComponent<Fighter>());
+            }
+            return true;
+        }
 
+        /// <summary>
+        /// Sets the cursor type for hovering this item
+        /// </summary>
+        /// <returns> CursorType </returns>
+        public CursorType GetCursorType() {
+            return (CursorType.Pickup);
+        }
     }
 
 }
