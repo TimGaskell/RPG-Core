@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
-using RPG.Resources;
+using RPG.Attributes;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.AI;
@@ -14,6 +14,7 @@ namespace RPG.Control {
         Health health;
         [SerializeField] CursorMapping[] cursorMappings = null;
         [SerializeField] float maxNavMeshProjectionDistance = 1f;
+        [SerializeField] float maxNavPathLength = 40f;
 
         [System.Serializable]
         struct CursorMapping {
@@ -159,8 +160,35 @@ namespace RPG.Control {
             if (!hasCastToNavMesh) return false;
 
             target = navMeshHit.position;
+
+            NavMeshPath path = new NavMeshPath();
+            bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
+            if (!hasPath) return false;
+            if(path.status != NavMeshPathStatus.PathComplete) return false;
+            if (GetPathLength(path) > maxNavPathLength) return false;
+
             return true;
 
+        }
+
+        /// <summary>
+        /// Gets the float distance from the position of the player to the selected point on the nav mesh. This is done by adding in all the distances between the points that the nav mesh agent
+        /// used to path find to the end location
+        /// </summary>
+        /// <param name="path"> NavMeshPath to the selected point</param>
+        /// <returns> float distance to the selected point on the nav mesh</returns>
+        private float GetPathLength(NavMeshPath path) {
+
+            float total = 0;
+
+            if (path.corners.Length < 2) return total;
+
+            for(int i = 0; i < path.corners.Length - 1; i++) {
+
+                total += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+
+            }
+            return total;
         }
 
         /// <summary>

@@ -4,11 +4,19 @@ using UnityEngine;
 using RPG.Saving;
 using RPG.Core;
 using RPG.Stats;
+using UnityEngine.Events;
 
-namespace RPG.Resources {
+namespace RPG.Attributes {
     public class Health : MonoBehaviour, ISaveable {
 
         [SerializeField] float regenerationPercentage = 70;
+        [SerializeField] TakeDamageEvent takeDamage;
+        [SerializeField] UnityEvent onDie;
+
+        [System.Serializable]
+        public class TakeDamageEvent : UnityEvent<float> {
+
+        }
 
         float health = -1f;
 
@@ -19,6 +27,7 @@ namespace RPG.Resources {
             if (health < 0) {
                 health = GetComponent<BaseStats>().GetStat(Stat.Health);
             }
+            
         }
 
         private void OnEnable() {
@@ -38,9 +47,14 @@ namespace RPG.Resources {
             print(gameObject.name + " took damage: " + damage);
 
             health = Mathf.Max(health - damage, 0);
-            if(health == 0) {
+           
+            if (health == 0) {
+                onDie.Invoke();
                 Die();
                 AwardExpereince(instigator);
+            }
+            else {
+                takeDamage.Invoke(damage);
             }
 
         }
@@ -58,12 +72,20 @@ namespace RPG.Resources {
         }
 
         /// <summary>
+        /// Gets the fraction of how much health a character has between 0 and 1.
+        /// </summary>
+        /// <returns> float fraction of health between 0 and 1 </returns>
+        public float GetFraction() {
+            return health / GetComponent<BaseStats>().GetStat(Stat.Health);
+        }
+
+        /// <summary>
         /// Function that determines how much health the character has as a percentage of its max health
         /// </summary>
         /// <returns> Percentage out of 100 for how much health the character has</returns>
         public float GetPercentage() {
 
-            return 100 *(health / GetComponent<BaseStats>().GetStat(Stat.Health));
+            return 100 * GetFraction();
         }
 
         /// <summary>
