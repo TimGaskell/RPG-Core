@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Control;
+using RPG.Attributes;
 
 namespace RPG.Combat {
     public class WeaponPickUp : MonoBehaviour, IRayCastable {
 
-        [SerializeField] Weapon weapon = null;
+        [SerializeField] WeaponConfig weapon = null;
+        [SerializeField] float healthToRestore = 0;
         [SerializeField] float respawnTime = 5;
 
         /// <summary>
@@ -16,13 +18,18 @@ namespace RPG.Combat {
         private void OnTriggerEnter(Collider other) {
             
             if(other.gameObject.tag == "Player") {
-                Pickup(other.GetComponent<Fighter>());
+                Pickup(other.gameObject);
 
             }
         }
 
-        private void Pickup(Fighter fighter) {
-            fighter.EquipWeapon(weapon);
+        private void Pickup(GameObject subject) {
+            if (weapon != null) {
+                subject.GetComponent<Fighter>().EquipWeapon(weapon);
+            }
+            if(healthToRestore > 0) {
+                subject.GetComponent<Health>().Heal(healthToRestore);
+            }
             StartCoroutine(HideForSeconds(respawnTime));
         }
 
@@ -60,7 +67,7 @@ namespace RPG.Combat {
         /// <returns> True or false if function can handle the raycast </returns>
         public bool HandRaycast(PlayerController callingController) {
             if (Input.GetMouseButtonDown(0)) {
-                Pickup(callingController.GetComponent<Fighter>());
+                Pickup(callingController.gameObject);
             }
             return true;
         }

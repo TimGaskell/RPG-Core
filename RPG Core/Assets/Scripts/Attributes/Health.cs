@@ -104,6 +104,12 @@ namespace RPG.Attributes {
             return GetComponent<BaseStats>().GetStat(Stat.Health);
         }
 
+        public void Heal(float HealthRestoreAmount) {
+
+            health = Mathf.Min(health + HealthRestoreAmount, GetMaxHealthPoints());
+
+        }
+
         /// <summary>
         /// Sets isDead to True and sets trigger for death animation to play. Prevents animation playing if already dead.
         /// </summary>
