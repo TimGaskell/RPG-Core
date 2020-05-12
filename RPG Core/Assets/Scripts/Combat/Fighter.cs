@@ -135,6 +135,7 @@ namespace RPG.Combat {
         public void Cancel() {
             TriggerStopAttack();
             target = null;
+            GetComponent<Mover>().Cancel();
 
         }
 
